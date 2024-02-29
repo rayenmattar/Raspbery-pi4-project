@@ -1,1 +1,46 @@
 
+from gpiozero import MotionSensor, LED
+from signal import pause
+
+pir = MotionSensor(18)
+
+#def motion_function():
+#    print("Motion Detected")
+
+#def no_motion_function():
+#    print("Motion stopped")
+
+#pir.when_motion = motion_function
+#pir.when_no_motion = no_motion_function
+
+
+count = 0
+
+def motion_function():
+    global count
+    count += 1
+    print("Motion Detected")
+    print("Count:", count)
+
+def no_motion_function():
+    global count
+    count -= 1
+    print("Motion stopped")
+    print("Count:", count)
+
+    from gpiozero import LED
+
+    led = LED(17)
+
+    def update_led():
+        if count > 0:
+            led.on()
+        else:
+            led.off()
+
+    pir.when_motion = motion_function
+    pir.when_no_motion = no_motion_function
+
+    update_led()
+
+pause()
